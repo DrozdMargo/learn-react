@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import ReactDOM from  'react-dom';
+
 
 class App extends React.Component {
     constructor(){
         super();
-        this.state = {currentEvent: '---'}
+        this.state = {a: ''}
         this.update = this.update.bind(this)
     }
-    update(e) {
-        this.setState({currentEvent: e.type})
+    update() {
+        this.setState({
+            a: this.a.refs.input.value,
+            b: this.refs.b.value
+        })
     }
    render(){
        return(
            <div>
-               <textarea cols="30" rows="10"
-               onKeyPress={this.update}
-               onKeyDown={this.update}
-               onCut={this.update}
-               onPaste={this.update}
-               onCopy={this.update}
-               onFocus={this.update}
-               onBlur={this.update}
-               onTouchMove={this.update}
-               />
-               <h1>{this.state.currentEvent}</h1>
+               <Input
+                   ref={ component => this.a = component}
+                   update={this.update.bind(this)}
+               />{this.state.a}
+              <hr />
+               <input
+                   ref="b"
+                   type="text"
+                   onChange={this.update.bind(this)}
+               />{this.state.b}
            </div>
            )
    }
+}
+
+class Input extends React.Component{
+    render(){
+        return(
+           <div><input ref="input" type="text" onChange={this.props.update}/></div>
+        )
+    }
 }
 export default App;
