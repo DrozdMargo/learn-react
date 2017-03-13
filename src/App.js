@@ -7,38 +7,29 @@ import ReactDOM from  'react-dom';
 class App extends React.Component {
     constructor(){
         super();
-        this.state = {a: ''}
-        this.update = this.update.bind(this)
+        this.state = {items: []}
     }
-    update() {
-        this.setState({
-            a: this.a.refs.input.value,
-            b: this.refs.b.value
-        })
+    componentWillMount(){
+        fetch('http://swapi.co/api/people/?format=json')
+            .then(response => response.json() )
+            .then( ({results: items}) => this.setState({items}))
     }
-   render(){
-       return(
-           <div>
-               <Input
-                   ref={ component => this.a = component}
-                   update={this.update.bind(this)}
-               />{this.state.a}
-              <hr />
-               <input
-                   ref="b"
-                   type="text"
-                   onChange={this.update.bind(this)}
-               />{this.state.b}
-           </div>
-           )
-   }
-}
-
-class Input extends React.Component{
+    filter(e){
+        this.setState({filter: e.target.value})
+    }
     render(){
-        return(
-           <div><input ref="input" type="text" onChange={this.props.update}/></div>
+        let items = this.state.items;
+        if(this.state.filter){
+            items = items.filter(item => item.name.toLowerCase()
+                .includes(this.state.filter.toLowerCase()))
+        }
+        return (
+            <div>
+                <input type="text" onChange={this.filter.bind(this)}/>
+                {items.map(item => <Person key={item.name} person={item} /> )}
+            </div>
         )
     }
 }
+const Person = (props) => <h4>{props.person.name}</h4>
 export default App;
