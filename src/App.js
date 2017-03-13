@@ -7,7 +7,6 @@ class App extends React.Component {
         super();
         this.state = {
             txt: 'this is the state txt',
-            cat: 0
         }
     }
 
@@ -18,20 +17,16 @@ class App extends React.Component {
     render() {
         return (
             <div>
-              <input type="text" onChange={this.update.bind(this)}/>
-              <h1>{this.state.txt}</h1>
+                <h1>{this.state.txt}</h1>
+                <Widget update={this.update.bind(this)}/>
+                <Widget update={this.update.bind(this)}/>
+                <Widget update={this.update.bind(this)}/>
+
             </div>
         )
 
     }
-
-// App.propTypes = {
-//   txt: React.PropTypes.string,
-//     cat: React.PropTypes.number.isRequired
-// }
-//
-// App.defaultProps = {
-//   txt: 'this is the default txt'
-// }
 }
+const Widget = (props) =>
+    <input type="text" onChange={props.update}/>
 export default App;
